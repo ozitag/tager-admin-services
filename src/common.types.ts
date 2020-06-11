@@ -24,6 +24,6 @@ export type RequestOptions = {
   fetchOptions?: RequestInit;
 };
 
-export type HttpRequestFunction = (
+export type HttpRequestFunction = <T = ParsedResponseBody>(
   options: RequestOptions
-) => Promise<ParsedResponseBody>;
+) => Promise<T>;
