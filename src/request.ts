@@ -111,7 +111,7 @@ function logRequest(res: Response, options: RequestInit): Response {
 async function makeRequest(
   method: HttpMethod,
   { path, body, params, absoluteUrl, fetchOptions }: RequestOptions
-): Promise<ParsedResponseBody> {
+): Promise<any> {
   const url = absoluteUrl || getRequestUrl(path, params);
   const options = configureOptions({ method, body, fetchOptions });
 

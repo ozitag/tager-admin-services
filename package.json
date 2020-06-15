@@ -1,6 +1,6 @@
 {
   "name": "@tager/admin-services",
-  "version": "0.0.2",
+  "version": "0.0.3-rc.1",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <i.saranchonkau@ozitag.com>",
@@ -32,7 +32,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint",
+      "pre-commit": "tsdx lint --fix",
       "post-commit": "git update-index --again"
     }
   },
