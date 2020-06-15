@@ -38,9 +38,9 @@ export type ResponseBody<Data = any> = {
 };
 
 export type LogoConfig = {
-  logo: Nullish<string>;
-  label: Nullish<string>;
-  'label-color': Nullish<string>;
+  logo?: Nullable<string>;
+  label?: Nullable<string>;
+  'label-color'?: Nullable<string>;
 };
 
 export type AppConfigType = {
