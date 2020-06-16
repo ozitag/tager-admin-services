@@ -6,6 +6,7 @@ function upload<T>({
   file,
   params,
   onProgress,
+  xhr,
 }: {
   file: File;
   params?: QueryParams;
@@ -15,9 +16,10 @@ function upload<T>({
     total: number;
     progress: number;
   }) => void;
+  xhr?: XMLHttpRequest;
 }): Promise<T> {
   return new Promise((resolve, reject) => {
-    const request = new XMLHttpRequest();
+    const request = xhr ?? new XMLHttpRequest();
 
     request.upload.addEventListener('progress', (event) => {
       if (onProgress) {

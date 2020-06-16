@@ -1,4 +1,11 @@
-import { ImageType, Nullable, Nullish, QueryParams, ResponseBody, ValidationError } from './common.types';
+import {
+  ImageType,
+  Nullable,
+  Nullish,
+  QueryParams,
+  ResponseBody,
+  ValidationError,
+} from './common.types';
 import { ACCESS_TOKEN_FIELD } from './constants';
 import RequestError from './RequestError';
 
@@ -81,4 +88,3 @@ export function isAbsoluteUrl(url: string): boolean {
 export function getImageUrl(image: Nullish<ImageType>): Nullable<string> {
   return image ? image.url : null;
 }
-
