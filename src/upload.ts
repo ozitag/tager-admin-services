@@ -68,6 +68,8 @@ function upload<T>({
       request.setRequestHeader('Authorization', `Bearer ${accessToken}`);
     }
 
+    request.setRequestHeader('Accept', 'application/json');
+
     request.send(formData);
   });
 }
