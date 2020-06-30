@@ -65,6 +65,19 @@ export function convertRequestErrorToMap(error: Error): Record<string, string> {
   return {};
 }
 
+export function getMessageFromError(error: unknown): string {
+  if (error instanceof RequestError) {
+    const responseBody = error.body as ResponseBody;
+    return responseBody.message ?? '';
+  }
+
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return '';
+}
+
 export function notEmpty<TValue>(
   value: TValue | null | undefined
 ): value is TValue {
