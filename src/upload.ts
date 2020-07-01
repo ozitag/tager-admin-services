@@ -1,6 +1,14 @@
 import RequestError from './RequestError';
 import { getAccessToken, getApiOrigin, getSearchString } from './utils';
-import { QueryParams } from './common.types';
+import { ParsedResponseBody, QueryParams } from './common.types';
+
+function parseResponse(response: string): ParsedResponseBody {
+  try {
+    return JSON.parse(response);
+  } catch (error) {
+    return response;
+  }
+}
 
 function upload<T>({
   file,
@@ -46,7 +54,7 @@ function upload<T>({
         reject(
           new RequestError(
             { code: request.status, text: request.statusText },
-            request.response
+            parseResponse(request.response)
           )
         );
       }
