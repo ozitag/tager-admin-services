@@ -4,6 +4,7 @@ import { bindHttpMethod } from './request';
 export { default as RequestError } from './RequestError';
 export { default as configStore } from './configuration';
 export { default as upload } from './upload';
+export * from './i18n';
 export * from './common.types';
 export * from './constants';
 export * from './utils';
