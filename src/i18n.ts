@@ -15,7 +15,7 @@ const i18n = {
       resourceBundleArgs.push(args);
     }
   },
-  init(params: InitOptions): Promise<TFunction> {
+  init(params?: InitOptions): Promise<TFunction> {
     const lang = configService.getConfig().LANGUAGE ?? 'en';
 
     return i18next
