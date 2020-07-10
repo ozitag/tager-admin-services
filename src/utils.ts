@@ -1,5 +1,5 @@
 import {
-  ImageType,
+  FileType,
   Nullable,
   Nullish,
   QueryParams,
@@ -98,6 +98,6 @@ export function isAbsoluteUrl(url: string): boolean {
   return ['https:', 'http:'].some((protocol) => url.startsWith(protocol));
 }
 
-export function getImageUrl(image: Nullish<ImageType>): Nullable<string> {
+export function getImageUrl(image: Nullish<FileType>): Nullable<string> {
   return image ? image.url : null;
 }

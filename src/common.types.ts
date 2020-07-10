@@ -58,7 +58,10 @@ export type AppConfigType = {
   };
 };
 
-export type ImageType = {
+export type FileType = {
   id: number;
+  mime: string;
+  name: string;
+  size: number;
   url: string;
 };
