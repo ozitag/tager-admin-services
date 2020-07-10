@@ -29,6 +29,12 @@ function upload<T>({
   return new Promise((resolve, reject) => {
     const request = xhr ?? new XMLHttpRequest();
 
+    const url = [
+      getApiOrigin(),
+      '/api/admin/upload',
+      getSearchString(params),
+    ].join('');
+
     request.upload.addEventListener('progress', (event) => {
       if (onProgress) {
         onProgress({
@@ -52,22 +58,18 @@ function upload<T>({
         }
       } else {
         reject(
-          new RequestError(
-            { code: request.status, text: request.statusText },
-            parseResponse(request.response)
-          )
+          new RequestError({
+            status: request.status,
+            statusText: request.statusText,
+            url: url,
+            body: parseResponse(request.response),
+          })
         );
       }
     });
 
     const formData = new FormData();
     formData.append('file', file);
-
-    const url = [
-      getApiOrigin(),
-      '/api/admin/upload',
-      getSearchString(params),
-    ].join('');
 
     request.open('POST', url);
 

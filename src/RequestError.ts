@@ -1,17 +1,23 @@
 import { ParsedResponseBody } from './common.types';
 
 class RequestError extends Error {
-  status: { code: number; text: string };
+  status: number;
+  statusText: string;
+  url: string;
   body: ParsedResponseBody;
 
-  constructor(
-    status: { code: number; text: string },
-    body: ParsedResponseBody
-  ) {
-    super(JSON.stringify({ status, body }, null, 2));
+  constructor(params: {
+    status: number;
+    statusText: string;
+    url: string;
+    body: ParsedResponseBody;
+  }) {
+    super(JSON.stringify(params, null, 2));
 
-    this.status = status;
-    this.body = body;
+    this.status = params.status;
+    this.statusText = params.statusText;
+    this.url = params.url;
+    this.body = params.body;
 
     console.error(this);
   }

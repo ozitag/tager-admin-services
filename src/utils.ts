@@ -46,7 +46,11 @@ export function isValidationError(value: any): value is ValidationError {
 }
 
 export function convertRequestErrorToMap(error: Error): Record<string, string> {
-  if (error instanceof RequestError) {
+  if (
+    error instanceof RequestError &&
+    error.body &&
+    typeof error.body === 'object'
+  ) {
     const responseBody = error.body as ResponseBody;
 
     if (responseBody.errors) {
@@ -65,17 +69,46 @@ export function convertRequestErrorToMap(error: Error): Record<string, string> {
   return {};
 }
 
+export function getMessageByStatusCode(error: RequestError): string {
+  switch (error.status) {
+    case 401:
+      return 'User is not authorized';
+    case 403:
+      return 'Forbidden';
+    case 404:
+      return `Server endpoint "${error.url}" is not found`;
+    case 500:
+      return 'Server error';
+    case 502:
+      return 'Server is not available';
+
+    default:
+      return error.statusText ?? 'Request error';
+  }
+}
+
+export function getMessageFromRequestError(error: RequestError): string {
+  const simpleMessage = getMessageByStatusCode(error);
+
+  if (error.body && typeof error.body === 'object') {
+    const responseBody = error.body as ResponseBody;
+
+    return responseBody.message ?? simpleMessage;
+  }
+
+  return simpleMessage;
+}
+
 export function getMessageFromError(error: unknown): string {
   if (error instanceof RequestError) {
-    const responseBody = error.body as ResponseBody;
-    return responseBody.message ?? '';
+    return getMessageFromRequestError(error);
   }
 
   if (error instanceof Error) {
     return error.message;
   }
 
-  return '';
+  return 'Unknown error';
 }
 
 export function notEmpty<TValue>(

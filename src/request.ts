@@ -63,43 +63,36 @@ function configureOptions({
   };
 }
 
-function getResponseContent(response: Response): Promise<ParsedResponseBody> {
+function parseResponseBody(response: Response): Promise<ParsedResponseBody> {
   const contentType = response.headers.get('content-type');
-
-  if (contentType && contentType.startsWith('application/json')) {
-    return response.json().catch((error) => {
-      /** Throws a SyntaxError exception if the string to parse is not valid JSON */
-      if (error instanceof SyntaxError) {
-        return response.text();
-      } else {
-        console.error(
-          `Unknown error while parsing response body: ${error.toString()}`
-        );
-
-        return null;
-      }
-    });
-  }
-
-  return response.text();
+  const isJson = Boolean(contentType?.startsWith('application/json'));
+  return isJson ? response.json() : response.text();
 }
 
 function handleErrors(response: Response): Promise<ParsedResponseBody> {
-  return getResponseContent(response).then((content) => {
-    if (response.ok) {
-      return content;
-    }
+  const errorParams = {
+    status: response.status,
+    statusText: response.statusText,
+    url: response.url,
+  };
 
-    return Promise.reject(
-      new RequestError(
-        {
-          code: response.status,
-          text: response.statusText,
-        },
-        content
-      )
+  return parseResponseBody(response)
+    .then((parsedResponseBody) => {
+      if (response.ok) {
+        return parsedResponseBody;
+      }
+
+      return Promise.reject(
+        new RequestError({ ...errorParams, body: parsedResponseBody })
+      );
+    })
+    .catch(() =>
+      response.text().then((responseBodyText) => {
+        return Promise.reject(
+          new RequestError({ ...errorParams, body: responseBodyText })
+        );
+      })
     );
-  });
 }
 
 function logRequest(res: Response, options: RequestInit): Response {
