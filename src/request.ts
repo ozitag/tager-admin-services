@@ -76,8 +76,8 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
     url: response.url,
   };
 
-  return parseResponseBody(response)
-    .then((parsedResponseBody) => {
+  return parseResponseBody(response).then(
+    (parsedResponseBody) => {
       if (response.ok) {
         return parsedResponseBody;
       }
@@ -85,14 +85,14 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
       return Promise.reject(
         new RequestError({ ...errorParams, body: parsedResponseBody })
       );
-    })
-    .catch(() =>
+    },
+    () =>
       response.text().then((responseBodyText) => {
         return Promise.reject(
           new RequestError({ ...errorParams, body: responseBodyText })
         );
       })
-    );
+  );
 }
 
 function logRequest(res: Response, options: RequestInit): Response {

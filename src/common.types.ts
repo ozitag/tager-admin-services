@@ -31,11 +31,25 @@ export type HttpRequestFunction = <T = ParsedResponseBody>(
 
 export type ValidationError = { code: string; message: string };
 
+export type LaravelError = {
+  message: string;
+  exception: string;
+  file: string;
+  line: number;
+  trace: Array<{
+    class: string;
+    file: string;
+    function: string;
+    line: number;
+    type: string;
+  }>;
+};
+
 export type ResponseBody<Data = any> = {
   data: Data;
   errors?: Record<string, ValidationError>;
   message?: string;
-};
+} & Partial<LaravelError>;
 
 export type LogoConfig = {
   logo?: Nullable<string>;

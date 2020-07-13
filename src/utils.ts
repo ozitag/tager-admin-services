@@ -93,7 +93,7 @@ export function getMessageFromRequestError(error: RequestError): string {
   if (error.body && typeof error.body === 'object') {
     const responseBody = error.body as ResponseBody;
 
-    return responseBody.message ?? simpleMessage;
+    return responseBody.message || responseBody.exception || simpleMessage;
   }
 
   return simpleMessage;
