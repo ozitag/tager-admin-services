@@ -14,7 +14,19 @@ export function getApiOrigin(): string {
 }
 
 export function getAccessToken(): Nullable<string> {
-  return localStorage.getItem(ACCESS_TOKEN_FIELD);
+  const predefinedAccessToken = process.env.VUE_APP_ACCESS_TOKEN ?? '';
+
+  const shouldUsePredefinedAccessToken =
+    predefinedAccessToken.length > 0 && process.env.VUE_APP_ENV === 'local';
+
+  if (shouldUsePredefinedAccessToken) {
+    console.warn(
+      'API service uses predefined access token from env "VUE_APP_ACCESS_TOKEN".'
+    );
+  }
+  return shouldUsePredefinedAccessToken
+    ? predefinedAccessToken
+    : localStorage.getItem(ACCESS_TOKEN_FIELD);
 }
 
 export function setAccessToken(token: string): void {
