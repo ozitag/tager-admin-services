@@ -7,7 +7,12 @@ import {
   QueryParams,
   RequestOptions,
 } from './common.types';
-import { getAccessToken, getApiOrigin, getSearchString } from './utils';
+import {
+  getAccessToken,
+  getApiOrigin,
+  getSearchString,
+  removeAccessToken,
+} from './utils';
 
 function configureHeaders(body?: BodyParam): Headers {
   const headers = new Headers();
@@ -75,6 +80,11 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
     statusText: response.statusText,
     url: response.url,
   };
+
+  if (response.status === 401 && process.env.VUE_APP_ENV !== 'local') {
+    removeAccessToken();
+    window.location.href = '/admin/auth';
+  }
 
   return parseResponseBody(response).then(
     (parsedResponseBody) => {
