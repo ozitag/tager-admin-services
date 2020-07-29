@@ -1,6 +1,6 @@
 {
   "name": "@tager/admin-services",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <i.saranchonkau@ozitag.com>",
@@ -23,20 +23,18 @@
     "prepare": "yarn build"
   },
   "dependencies": {
-    "i18next": "^19.5.4"
+    "i18next": "^19.6.3"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-commonjs": "^14.0.0",
     "@types/node": "12.x",
-    "add": "^2.0.6",
     "copyfiles": "^2.3.0",
     "husky": "^4.2.5",
     "prettier": "^2.x",
     "tsdx": "^0.13.2",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.5",
-    "vue": "^2.6.x",
-    "yarn": "^1.22.4"
+    "typescript": "^3.9.7",
+    "vue": "^2.6.x"
   },
   "husky": {
     "hooks": {

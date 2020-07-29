@@ -9,8 +9,8 @@ import {
 import { ACCESS_TOKEN_FIELD } from './constants';
 import RequestError from './RequestError';
 
-export function getApiOrigin(): string {
-  return process.env.VUE_APP_API_ORIGIN ?? '';
+export function getApiUrl(): string {
+  return process.env.VUE_APP_API_URL ?? '';
 }
 
 export function getAccessToken(): Nullable<string> {

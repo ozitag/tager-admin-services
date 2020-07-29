@@ -9,7 +9,7 @@ import {
 } from './common.types';
 import {
   getAccessToken,
-  getApiOrigin,
+  getApiUrl,
   getSearchString,
   removeAccessToken,
 } from './utils';
@@ -45,9 +45,7 @@ function configureBody(body?: BodyParam): BodyInit | null {
 
 function getRequestUrl(path = '', params?: QueryParams): string {
   const searchParams = getSearchString(params);
-  return [getApiOrigin(), '/api/admin', path, searchParams]
-    .filter(Boolean)
-    .join('');
+  return [getApiUrl(), path, searchParams].filter(Boolean).join('');
 }
 
 function configureOptions({

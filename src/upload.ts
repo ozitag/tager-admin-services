@@ -1,5 +1,5 @@
 import RequestError from './RequestError';
-import { getAccessToken, getApiOrigin, getSearchString } from './utils';
+import { getAccessToken, getApiUrl, getSearchString } from './utils';
 import { ParsedResponseBody, QueryParams } from './common.types';
 
 function parseResponse(response: string): ParsedResponseBody {
@@ -10,12 +10,7 @@ function parseResponse(response: string): ParsedResponseBody {
   }
 }
 
-function upload<T>({
-  file,
-  params,
-  onProgress,
-  xhr,
-}: {
+function upload<T>(options: {
   file: File;
   params?: QueryParams;
   onProgress?: (progressData: {
@@ -25,19 +20,20 @@ function upload<T>({
     progress: number;
   }) => void;
   xhr?: XMLHttpRequest;
+  path?: string;
 }): Promise<T> {
   return new Promise((resolve, reject) => {
-    const request = xhr ?? new XMLHttpRequest();
+    const request = options.xhr ?? new XMLHttpRequest();
 
     const url = [
-      getApiOrigin(),
-      '/api/admin/upload',
-      getSearchString(params),
+      getApiUrl(),
+      options.path ?? '/admin/upload',
+      getSearchString(options.params),
     ].join('');
 
     request.upload.addEventListener('progress', (event) => {
-      if (onProgress) {
-        onProgress({
+      if (options.onProgress) {
+        options.onProgress({
           event,
           loaded: event.loaded,
           total: event.total,
@@ -69,7 +65,7 @@ function upload<T>({
     });
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', options.file);
 
     request.open('POST', url);
 
