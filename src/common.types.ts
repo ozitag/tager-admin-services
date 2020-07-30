@@ -1,3 +1,5 @@
+import { TFunction } from 'i18next';
+
 export type ConstantMap<C extends string> = Readonly<Record<C, C>>;
 export type Nullable<T> = T | null;
 export type Nullish<T> = T | null | undefined;
@@ -79,3 +81,5 @@ export type FileType = {
   size: number;
   url: string;
 };
+
+export interface TranslateFunction extends TFunction {}
