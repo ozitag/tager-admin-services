@@ -11,7 +11,7 @@ import {
   getAccessToken,
   getApiUrl,
   getSearchString,
-  removeAccessToken,
+  removeAuthTokensAndRedirectToAuthPage,
 } from './utils';
 
 function configureHeaders(body?: BodyParam): Headers {
@@ -80,8 +80,7 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
   };
 
   if (response.status === 401 && process.env.VUE_APP_ENV !== 'local') {
-    removeAccessToken();
-    window.location.href = '/admin/auth';
+    removeAuthTokensAndRedirectToAuthPage();
   }
 
   return parseResponseBody(response).then(

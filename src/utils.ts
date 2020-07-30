@@ -6,7 +6,7 @@ import {
   ResponseBody,
   ValidationError,
 } from './common.types';
-import { ACCESS_TOKEN_FIELD } from './constants';
+import { ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD } from './constants';
 import RequestError from './RequestError';
 
 export function getApiUrl(): string {
@@ -35,6 +35,10 @@ export function setAccessToken(token: string): void {
 
 export function removeAccessToken(): void {
   return localStorage.removeItem(ACCESS_TOKEN_FIELD);
+}
+
+export function removeRefreshToken(): void {
+  return localStorage.removeItem(REFRESH_TOKEN_FIELD);
 }
 
 export function getSearchString(queryParams?: QueryParams): string {
@@ -145,4 +149,19 @@ export function isAbsoluteUrl(url: string): boolean {
 
 export function getImageUrl(image: Nullish<FileType>): Nullable<string> {
   return image ? image.url : null;
+}
+
+export function getAuthPageUrl(): string {
+  const baseUrl =
+    process.env.VUE_APP_PUBLIC_PATH === '/'
+      ? ''
+      : process.env.VUE_APP_PUBLIC_PATH;
+  return baseUrl + '/auth';
+}
+
+export function removeAuthTokensAndRedirectToAuthPage(): void {
+  removeAccessToken();
+  removeRefreshToken();
+
+  window.location.href = getAuthPageUrl();
 }
