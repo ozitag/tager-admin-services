@@ -17,5 +17,5 @@ export const request = {
   patch: bindHttpMethod(HTTP_METHODS.PATCH),
 };
 
-export { default as useResource } from './hooks/useResource';
-export { default as useResourceDelete } from './hooks/useResourceDelete';
+export * from './hooks/useResource';
+export * from './hooks/useResourceDelete';

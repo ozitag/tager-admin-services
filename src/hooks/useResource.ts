@@ -17,7 +17,7 @@ export type ResourceRef<T> = {
   status: Ref<FetchStatus>;
 };
 
-function useResource<T>(params: {
+export function useResource<T>(params: {
   fetchResource: () => Promise<ResponseBody<T>>;
   initialValue: T;
   resourceName?: string;
@@ -60,5 +60,3 @@ function useResource<T>(params: {
 
   return [fetchEntityList, { data, loading, error, status }];
 }
-
-export default useResource;

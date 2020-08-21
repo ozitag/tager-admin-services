@@ -2,7 +2,7 @@ import { ref, SetupContext } from '@vue/composition-api';
 
 type ResourceId = string | number;
 
-function useResourceDelete(params: {
+export function useResourceDelete(params: {
   deleteResource: (entityId: ResourceId) => Promise<{ success: boolean }>;
   resourceName?: string;
   onSuccess?: () => void;
@@ -69,5 +69,3 @@ function useResourceDelete(params: {
       deletingResourceIdList.value.includes(entityId),
   };
 }
-
-export default useResourceDelete;
