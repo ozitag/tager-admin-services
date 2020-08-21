@@ -16,3 +16,6 @@ export const request = {
   delete: bindHttpMethod(HTTP_METHODS.DELETE),
   patch: bindHttpMethod(HTTP_METHODS.PATCH),
 };
+
+export { default as useResource } from './hooks/useResource';
+export { default as useResourceDelete } from './hooks/useResourceDelete';

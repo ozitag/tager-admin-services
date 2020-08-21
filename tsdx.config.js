@@ -6,7 +6,7 @@ const commonjs = require('@rollup/plugin-commonjs');
  * https://github.com/formik/tsdx/blob/158ee9a69c824b71b62cf987fe943a167f47f936/src/utils.ts#L22-L23
  */
 function external(id) {
-  const peerDependencies = ['vue'];
+  const peerDependencies = ['vue', '@vue/composition-api'];
   const externalDependencies = [];
   const dependencies = ['i18next'];
 
