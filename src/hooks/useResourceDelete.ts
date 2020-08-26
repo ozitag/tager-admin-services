@@ -9,7 +9,7 @@ export function useResourceDelete(params: {
   context?: SetupContext;
 }): {
   handleResourceDelete: (entityId: ResourceId) => void;
-  isDeleting: (entityId: ResourceId) => void;
+  isDeleting: (entityId: ResourceId) => boolean;
 } {
   const deletingResourceIdList = ref<Array<ResourceId>>([]);
 
@@ -27,7 +27,9 @@ export function useResourceDelete(params: {
         .deleteResource(entityId)
         .then((response) => {
           if (response.success) {
-            deletingResourceIdList.value.filter((id) => id !== entityId);
+            deletingResourceIdList.value = deletingResourceIdList.value.filter(
+              (id) => id !== entityId
+            );
 
             if (params.onSuccess) {
               params.onSuccess();
