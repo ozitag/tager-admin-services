@@ -27,10 +27,6 @@ export function useResourceDelete(params: {
         .deleteResource(entityId)
         .then((response) => {
           if (response.success) {
-            deletingResourceIdList.value = deletingResourceIdList.value.filter(
-              (id) => id !== entityId
-            );
-
             if (params.onSuccess) {
               params.onSuccess();
             }
@@ -61,6 +57,11 @@ export function useResourceDelete(params: {
               body: `${resourceName} deletion has been failed`,
             });
           }
+        })
+        .finally(() => {
+          deletingResourceIdList.value = deletingResourceIdList.value.filter(
+            (id) => id !== entityId
+          );
         });
     }
   }

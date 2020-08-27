@@ -26,10 +26,6 @@ export function useResourceMove(params: {
       .moveResource(entityId, direction)
       .then((response) => {
         if (response.success) {
-          movingResourceIdList.value = movingResourceIdList.value.filter(
-            (id) => id !== entityId
-          );
-
           if (params.onSuccess) {
             params.onSuccess();
           }
@@ -60,6 +56,11 @@ export function useResourceMove(params: {
             body: `${resourceName} move has been failed`,
           });
         }
+      })
+      .finally(() => {
+        movingResourceIdList.value = movingResourceIdList.value.filter(
+          (id) => id !== entityId
+        );
       });
   }
 
