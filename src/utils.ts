@@ -1,3 +1,5 @@
+import * as t from 'typed-contracts';
+
 import {
   FileType,
   Nullable,
@@ -53,32 +55,33 @@ export function getSearchString(queryParams?: QueryParams): string {
   return `?${searchParams.toString()}`;
 }
 
-export function isValidationError(value: any): value is ValidationError {
-  return (
-    typeof value === 'object' &&
-    typeof value.code === 'string' &&
-    typeof value.message === 'string'
-  );
-}
+const requestErrorBodyContract = t.object({
+  errors: t.objectOf(
+    t.object({
+      code: t.string.optional,
+      message: t.string,
+    })
+  ),
+});
 
 export function convertRequestErrorToMap(error: Error): Record<string, string> {
-  if (
-    error instanceof RequestError &&
-    error.body &&
-    typeof error.body === 'object'
-  ) {
-    const responseBody = error.body as ResponseBody;
+  if (error instanceof RequestError) {
+    const validationResult = requestErrorBodyContract(
+      'RequestError.body',
+      error.body
+    );
 
-    if (responseBody.errors) {
-      return Object.keys(responseBody.errors).reduce<Record<string, string>>(
-        (result, key) => {
-          if (responseBody.errors) {
-            result[key] = responseBody.errors[key].message;
-          }
-          return result;
-        },
-        {}
-      );
+    if (validationResult instanceof t.ValidationError) {
+      return {};
+    } else {
+      return Object.keys(validationResult.errors).reduce<
+        Record<string, string>
+      >((result, key) => {
+        const validationError = validationResult.errors[key] as ValidationError;
+
+        result[key] = validationError.message;
+        return result;
+      }, {});
     }
   }
 

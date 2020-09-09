@@ -31,7 +31,7 @@ export type HttpRequestFunction = <T = ParsedResponseBody>(
   options: RequestOptions
 ) => Promise<T>;
 
-export type ValidationError = { code: string; message: string };
+export type ValidationError = { code?: string; message: string };
 
 export type LaravelError = {
   message: string;
