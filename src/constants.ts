@@ -1,7 +1,8 @@
 import { ConstantMap, FetchStatus, HttpMethod, Nullable } from './common.types';
 
-export const ACCESS_TOKEN_FIELD = 'accessToken';
-export const REFRESH_TOKEN_FIELD = 'refreshToken';
+export const ACCESS_TOKEN_FIELD = 'admin_access_token';
+export const REFRESH_TOKEN_FIELD = 'admin_refresh_token';
+
 export const HTTP_METHODS: ConstantMap<HttpMethod> = {
   GET: 'GET',
   POST: 'POST',
