@@ -1,15 +1,7 @@
-import * as t from 'typed-contracts';
-
-import {
-  FileType,
-  Nullable,
-  Nullish,
-  QueryParams,
-  ResponseBody,
-  ValidationError,
-} from './common.types';
+import { Nullable, QueryParams, ResponseBody } from './common.types';
 import { ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD } from './constants';
 import RequestError from './RequestError';
+import { isValidationErrorsBody } from './typeGuards';
 
 export function getApiUrl(): string {
   return process.env.VUE_APP_API_URL ?? '';
@@ -55,34 +47,19 @@ export function getSearchString(queryParams?: QueryParams): string {
   return `?${searchParams.toString()}`;
 }
 
-const requestErrorBodyContract = t.object({
-  errors: t.objectOf(
-    t.object({
-      code: t.string.optional,
-      message: t.string,
-    })
-  ),
-});
-
 export function convertRequestErrorToMap(error: Error): Record<string, string> {
-  if (error instanceof RequestError) {
-    const validationResult = requestErrorBodyContract(
-      'RequestError.body',
-      error.body
-    );
+  if (error instanceof RequestError && isValidationErrorsBody(error.body)) {
+    const errorBody = error.body;
 
-    if (validationResult instanceof t.ValidationError) {
-      return {};
-    } else {
-      return Object.keys(validationResult.errors).reduce<
-        Record<string, string>
-      >((result, key) => {
-        const validationError = validationResult.errors[key] as ValidationError;
+    return Object.keys(errorBody.errors).reduce<Record<string, string>>(
+      (result, key) => {
+        const validationError = errorBody.errors[key];
 
         result[key] = validationError.message;
         return result;
-      }, {});
-    }
+      },
+      {}
+    );
   }
 
   return {};
@@ -148,10 +125,6 @@ export function trimTrailingSlash(url: string): string {
 
 export function isAbsoluteUrl(url: string): boolean {
   return ['https:', 'http:'].some((protocol) => url.startsWith(protocol));
-}
-
-export function getImageUrl(image: Nullish<FileType>): Nullable<string> {
-  return image ? image.url : null;
 }
 
 export function getAuthPageUrl(): string {

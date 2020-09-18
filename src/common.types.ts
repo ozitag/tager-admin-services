@@ -1,4 +1,5 @@
 import { TFunction } from 'i18next';
+import { ResponseWithValidationErrorsType } from './typeGuards';
 
 export type ConstantMap<C extends string> = Readonly<Record<C, C>>;
 export type Nullable<T> = T | null;
@@ -31,8 +32,6 @@ export type HttpRequestFunction = <T = ParsedResponseBody>(
   options: RequestOptions
 ) => Promise<T>;
 
-export type ValidationError = { code?: string; message: string };
-
 export type LaravelError = {
   message: string;
   exception: string;
@@ -49,9 +48,9 @@ export type LaravelError = {
 
 export type ResponseBody<Data = any> = {
   data: Data;
-  errors?: Record<string, ValidationError>;
   message?: string;
-} & Partial<LaravelError>;
+} & Partial<LaravelError> &
+  ResponseWithValidationErrorsType;
 
 export type LogoConfig = {
   logo?: Nullable<string>;
@@ -72,14 +71,6 @@ export type AppConfigType = {
     logo: string;
     background: string;
   };
-};
-
-export type FileType = {
-  id: number;
-  mime: string;
-  name: string;
-  size: number;
-  url: string;
 };
 
 export interface TranslateFunction extends TFunction {}

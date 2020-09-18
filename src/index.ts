@@ -1,5 +1,6 @@
 import { HTTP_METHODS } from './constants';
 import { bindHttpMethod } from './request';
+import * as z from 'zod';
 
 export { default as RequestError } from './RequestError';
 export { default as configStore } from './configuration';
@@ -8,6 +9,8 @@ export { default as i18n } from './i18n';
 export * from './common.types';
 export * from './constants';
 export * from './utils';
+export * from './typeGuards';
+export { z };
 
 export const request = {
   get: bindHttpMethod(HTTP_METHODS.GET),
