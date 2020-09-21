@@ -1,6 +1,6 @@
 {
   "name": "@tager/admin-services",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <i.saranchonkau@ozitag.com>",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "i18next": "^19.7.0",
+    "nanoid": "^3.1.12",
     "zod": "^1.11.8"
   },
   "devDependencies": {

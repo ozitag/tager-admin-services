@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 import { Nullable, QueryParams, ResponseBody } from './common.types';
 import { ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD } from './constants';
 import RequestError from './RequestError';
@@ -107,12 +109,6 @@ export function getMessageFromError(error: unknown): string {
   return 'Unknown error';
 }
 
-export function notEmpty<TValue>(
-  value: TValue | null | undefined
-): value is TValue {
-  return value !== null && value !== undefined;
-}
-
 export function convertStringToNumberIfValid(value: string): number | string {
   const parsedNumber = Number(value.trim());
 
@@ -140,4 +136,26 @@ export function removeAuthTokensAndRedirectToAuthPage(): void {
   removeRefreshToken();
 
   window.location.href = getAuthPageUrl();
+}
+
+export function generateNumberArray(length: number): Array<number> {
+  return Array.from({ length }, (_, index) => index);
+}
+
+export function isNotNullish<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+export const notEmpty = isNotNullish;
+
+export function isNotFalsy<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
+  return Boolean(value);
+}
+
+export function createId(): string {
+  return nanoid();
 }
