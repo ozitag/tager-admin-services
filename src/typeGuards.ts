@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-const RequestErrorBodySchema = z.object({
+export const RequestErrorBodySchema = z.object({
   errors: z.record(
     z.object({
       code: z.string().optional(),
@@ -19,7 +19,7 @@ export function isValidationErrorsBody(
   return RequestErrorBodySchema.check(value);
 }
 
-const FileObjectSchema = z.object({
+export const FileObjectSchema = z.object({
   id: z.number(),
   mime: z.string(),
   name: z.string(),
