@@ -142,20 +142,6 @@ export function generateNumberArray(length: number): Array<number> {
   return Array.from({ length }, (_, index) => index);
 }
 
-export function isNotNullish<TValue>(
-  value: TValue | null | undefined
-): value is TValue {
-  return value !== null && value !== undefined;
-}
-
-export const notEmpty = isNotNullish;
-
-export function isNotFalsy<TValue>(
-  value: TValue | null | undefined
-): value is TValue {
-  return Boolean(value);
-}
-
 export function createId(): string {
   return nanoid();
 }

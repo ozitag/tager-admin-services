@@ -32,3 +32,37 @@ export type FileType = z.infer<typeof FileObjectSchema>;
 export function isFileObject(value: unknown): value is FileType {
   return FileObjectSchema.check(value);
 }
+
+export function isString(value: unknown): value is string  {
+  return typeof value === 'string';
+}
+
+export function isNonNullObject(value: unknown): value is object  {
+  return typeof value === 'object' && value !== null;
+}
+
+export function isNullish(value: unknown): value is null | undefined  {
+  return value === null || value === undefined;
+}
+
+export function isNullable(value: unknown): value is null  {
+  return value === null;
+}
+
+export function isNumber(value: unknown): value is number  {
+  return typeof value === 'number' && !Number.isNaN(value);
+}
+
+export function isNotNullish<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+export const notEmpty = isNotNullish;
+
+export function isNotFalsy<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
+  return Boolean(value);
+}
