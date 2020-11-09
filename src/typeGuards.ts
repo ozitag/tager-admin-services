@@ -7,6 +7,7 @@ export const RequestErrorBodySchema = z.object({
       message: z.string(),
     })
   ),
+  message: z.string()
 });
 
 export type ResponseWithValidationErrorsType = z.infer<
