@@ -10,20 +10,22 @@ import { FetchStatus, Nullable, ResponseBody } from '../common.types';
 import { FETCH_STATUSES } from '../constants';
 import { createId, getMessageFromError } from '../utils';
 
-export type ResourceRef<T> = {
-  data: Ref<T>;
+export type ResourceRef<D, M> = {
+  data: Ref<D>;
+  meta: Ref<M | undefined>;
   loading: ComputedRef<boolean>;
   error: Ref<Nullable<string>>;
   status: Ref<FetchStatus>;
 };
 
-export function useResource<T>(params: {
-  fetchResource: () => Promise<ResponseBody<T>>;
-  initialValue: T;
+export function useResource<D, M = undefined>(params: {
+  fetchResource: () => Promise<ResponseBody<D, M>>;
+  initialValue: D;
   resourceName?: string;
   context?: SetupContext;
-}): [() => Promise<void>, ResourceRef<T>] {
-  const data = ref<T>(params.initialValue) as Ref<T>;
+}): [() => Promise<void>, ResourceRef<D, M>] {
+  const data = ref<D>(params.initialValue) as Ref<D>;
+  const meta = ref<M | undefined>(undefined) as Ref<M | undefined>;
   const status = ref<FetchStatus>(FETCH_STATUSES.IDLE);
   const error = ref<string | null>(null);
 
@@ -45,6 +47,7 @@ export function useResource<T>(params: {
         currentRequestId.value = null;
 
         data.value = response.data;
+        meta.value = response.meta;
         status.value = FETCH_STATUSES.SUCCESS;
         error.value = null;
       })
@@ -66,10 +69,11 @@ export function useResource<T>(params: {
         }
 
         data.value = params.initialValue;
+        meta.value = undefined;
         status.value = FETCH_STATUSES.FAILURE;
         error.value = getMessageFromError(error);
       });
   }
 
-  return [makeRequest, { data, loading, error, status }];
+  return [makeRequest, { data, meta, loading, error, status }];
 }

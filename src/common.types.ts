@@ -46,9 +46,19 @@ export type LaravelError = {
   }>;
 };
 
-export type ResponseBody<Data = any> = {
+export interface PaginationMeta {
+  page: {
+    number: number;
+    size: number;
+    count: number;
+  };
+  total: number;
+}
+
+export type ResponseBody<Data = any, M = any> = {
   data: Data;
   message?: string;
+  meta?: M;
 } & Partial<LaravelError> &
   ResponseWithValidationErrorsType;
 
