@@ -10,7 +10,7 @@ import { FetchStatus, Nullable, ResponseBody } from '../common.types';
 import { FETCH_STATUSES } from '../constants';
 import { createId, getMessageFromError } from '../utils';
 
-export type ResourceRef<D, M> = {
+export type ResourceRef<D, M = undefined> = {
   data: Ref<D>;
   meta: Ref<M | undefined>;
   loading: ComputedRef<boolean>;
