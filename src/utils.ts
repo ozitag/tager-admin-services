@@ -120,7 +120,12 @@ export function trimTrailingSlash(url: string): string {
 }
 
 export function isAbsoluteUrl(url: string): boolean {
-  return ['https:', 'http:'].some((protocol) => url.startsWith(protocol));
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 export function getAuthPageUrl(): string {
