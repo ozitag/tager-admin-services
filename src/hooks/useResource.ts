@@ -10,22 +10,35 @@ import { FetchStatus, Nullable, ResponseBody } from '../common.types';
 import { FETCH_STATUSES } from '../constants';
 import { createId, getMessageFromError } from '../utils';
 
-export type ResourceRef<D, M = undefined> = {
-  data: Ref<D>;
-  meta: Ref<M | undefined>;
+export type ResourceRef<Data, Meta = undefined> = {
+  data: Ref<Data>;
+  meta: Ref<Meta | undefined>;
   loading: ComputedRef<boolean>;
   error: Ref<Nullable<string>>;
   status: Ref<FetchStatus>;
 };
 
-export function useResource<D, M = undefined>(params: {
-  fetchResource: () => Promise<ResponseBody<D, M>>;
-  initialValue: D;
+export type ResourceHookReturnType<Data, Meta, RequestParams> = [
+  RequestParams extends undefined
+    ? () => Promise<void>
+    : (params: RequestParams) => Promise<void>,
+  ResourceRef<Data, Meta>
+];
+
+export function useResource<
+  Data,
+  Meta = undefined,
+  RequestParams = undefined
+>(params: {
+  fetchResource: RequestParams extends undefined
+    ? () => Promise<ResponseBody<Data, Meta>>
+    : (params: RequestParams) => Promise<ResponseBody<Data, Meta>>;
+  initialValue: Data;
   resourceName?: string;
   context?: SetupContext;
-}): [() => Promise<void>, ResourceRef<D, M>] {
-  const data = ref<D>(params.initialValue) as Ref<D>;
-  const meta = ref<M | undefined>(undefined) as Ref<M | undefined>;
+}): ResourceHookReturnType<Data, Meta, RequestParams> {
+  const data = ref<Data>(params.initialValue) as Ref<Data>;
+  const meta = ref<Meta | undefined>(undefined) as Ref<Meta | undefined>;
   const status = ref<FetchStatus>(FETCH_STATUSES.IDLE);
   const error = ref<string | null>(null);
 
@@ -33,14 +46,14 @@ export function useResource<D, M = undefined>(params: {
 
   const loading = computed(() => status.value === FETCH_STATUSES.LOADING);
 
-  function makeRequest(): Promise<void> {
+  function makeRequest(requestParams: RequestParams): Promise<void> {
     status.value = FETCH_STATUSES.LOADING;
 
     const requestId = createId();
     currentRequestId.value = requestId;
 
     return params
-      .fetchResource()
+      .fetchResource(requestParams)
       .then((response) => {
         if (requestId !== currentRequestId.value) return;
 
@@ -75,5 +88,8 @@ export function useResource<D, M = undefined>(params: {
       });
   }
 
-  return [makeRequest, { data, meta, loading, error, status }];
+  return [
+    makeRequest,
+    { data, meta, loading, error, status },
+  ] as ResourceHookReturnType<Data, Meta, RequestParams>;
 }
