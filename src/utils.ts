@@ -147,6 +147,6 @@ export function generateNumberArray(length: number): Array<number> {
   return Array.from({ length }, (_, index) => index);
 }
 
-export function createId(): string {
-  return nanoid();
+export function createId(size?: number): string {
+  return nanoid(size);
 }
