@@ -1,6 +1,7 @@
 import RequestError from './RequestError';
 import { getAccessToken, getApiUrl, getSearchString } from './utils';
 import { ParsedResponseBody, QueryParams } from './common.types';
+import configService from './configuration';
 
 function parseResponse(response: string): ParsedResponseBody {
   try {
@@ -73,6 +74,10 @@ function upload<T>(options: {
     if (accessToken) {
       request.setRequestHeader('Authorization', `Bearer ${accessToken}`);
     }
+
+    const language: string = configService.getConfig().LANGUAGE ?? 'en';
+    request.setRequestHeader('Accept-Language', language);
+
 
     request.setRequestHeader('Accept', 'application/json');
 
