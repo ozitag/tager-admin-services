@@ -13,6 +13,7 @@ import {
   getSearchString,
   removeAuthTokensAndRedirectToAuthPage,
 } from './utils';
+import configService from './configuration';
 
 function configureHeaders(body?: BodyParam): Headers {
   const headers = new Headers();
@@ -23,10 +24,12 @@ function configureHeaders(body?: BodyParam): Headers {
   }
 
   const accessToken = getAccessToken();
-
   if (accessToken) {
     headers.set('Authorization', `Bearer ${accessToken}`);
   }
+
+  const language: string = configService.getConfig().LANGUAGE ?? 'en';
+  headers.set('Accept-Language', language);
 
   headers.set('Accept', 'application/json');
 
