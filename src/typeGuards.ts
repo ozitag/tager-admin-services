@@ -7,7 +7,7 @@ export const RequestErrorBodySchema = z.object({
       message: z.string(),
     })
   ),
-  message: z.string()
+  message: z.string(),
 });
 
 export type ResponseWithValidationErrorsType = z.infer<
@@ -21,7 +21,7 @@ export function isValidationErrorsBody(
 }
 
 export const FileObjectSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   mime: z.string(),
   name: z.string(),
   size: z.number(),
@@ -34,23 +34,23 @@ export function isFileObject(value: unknown): value is FileType {
   return FileObjectSchema.check(value);
 }
 
-export function isString(value: unknown): value is string  {
+export function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
 
-export function isNonNullObject(value: unknown): value is object  {
+export function isNonNullObject(value: unknown): value is object {
   return typeof value === 'object' && value !== null;
 }
 
-export function isNullish(value: unknown): value is null | undefined  {
+export function isNullish(value: unknown): value is null | undefined {
   return value === null || value === undefined;
 }
 
-export function isNullable(value: unknown): value is null  {
+export function isNullable(value: unknown): value is null {
   return value === null;
 }
 
-export function isNumber(value: unknown): value is number  {
+export function isNumber(value: unknown): value is number {
   return typeof value === 'number' && !Number.isNaN(value);
 }
 
