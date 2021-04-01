@@ -60,7 +60,7 @@ export type ResponseBody<Data = any, M = any> = {
   message?: string;
   meta?: M;
 } & Partial<LaravelError> &
-  ResponseWithValidationErrorsType;
+  Partial<ResponseWithValidationErrorsType>;
 
 export type LogoConfig = {
   logo?: Nullable<string>;
