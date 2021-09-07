@@ -170,3 +170,11 @@ export function urlTranslit(phrase: string): string {
       return t[index];
     }).replace(/-+/gi, '-').toLowerCase();
 }
+
+export function getWebsiteOrigin(): string {
+  return process.env.VUE_APP_WEBSITE_URL || window.location.origin;
+}
+
+export function getSearchParams(): URLSearchParams {
+  return new URLSearchParams(window.location.search);
+}
