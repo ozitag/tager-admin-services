@@ -23,3 +23,4 @@ export const request = {
 export * from './hooks/useResource';
 export * from './hooks/useResourceDelete';
 export * from './hooks/useResourceMove';
+export * from './hooks/useResourceClone';
