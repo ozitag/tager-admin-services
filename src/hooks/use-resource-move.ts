@@ -1,7 +1,8 @@
-import { ref, SetupContext } from '@vue/composition-api';
+import { ref, SetupContext } from "vue";
+import { useToast } from "./use-toast";
 
 type ResourceId = string | number;
-type Direction = 'up' | 'down';
+type Direction = "up" | "down";
 
 export function useResourceMove(params: {
   moveResource: (
@@ -16,9 +17,10 @@ export function useResourceMove(params: {
   isMoving: (entityId: ResourceId) => boolean;
 } {
   const movingResourceIdList = ref<Array<ResourceId>>([]);
+  const toast = useToast();
 
   function handleResourceMove(entityId: ResourceId, direction: Direction) {
-    const resourceName = params.resourceName ?? 'Resource';
+    const resourceName = params.resourceName ?? "Resource";
 
     movingResourceIdList.value.push(entityId);
 
@@ -30,32 +32,26 @@ export function useResourceMove(params: {
             params.onSuccess();
           }
 
-          if (params.context?.root.$toast) {
-            params.context.root.$toast({
-              variant: 'success',
-              title: 'Success',
-              body: `${resourceName} has been successfully moved`,
-            });
-          }
+          toast.show({
+            variant: "success",
+            title: "Success",
+            body: `${resourceName} has been successfully moved`,
+          });
         } else {
-          if (params.context?.root.$toast) {
-            params.context.root.$toast({
-              variant: 'danger',
-              title: 'Error',
-              body: `${resourceName} move has been failed`,
-            });
-          }
+          toast.show({
+            variant: "danger",
+            title: "Error",
+            body: `${resourceName} move has been failed`,
+          });
         }
       })
       .catch((error) => {
         console.error(error);
-        if (params.context?.root.$toast) {
-          params.context.root.$toast({
-            variant: 'danger',
-            title: 'Error',
-            body: `${resourceName} move has been failed`,
-          });
-        }
+        toast.show({
+          variant: "danger",
+          title: "Error",
+          body: `${resourceName} move has been failed`,
+        });
       })
       .finally(() => {
         movingResourceIdList.value = movingResourceIdList.value.filter(

@@ -1,14 +1,9 @@
-import {
-  computed,
-  ComputedRef,
-  Ref,
-  ref,
-  SetupContext,
-} from '@vue/composition-api';
+import { computed, ComputedRef, Ref, ref, SetupContext } from "vue";
 
-import { FetchStatus, Nullable, ResponseBody } from '../common.types';
-import { FETCH_STATUSES } from '../constants';
-import { createId, getMessageFromError } from '../utils';
+import { FetchStatus, Nullable, ResponseBody } from "../typings/common";
+import { FETCH_STATUSES } from "../constants/common";
+import { createId, getMessageFromError } from "../utils/common";
+import { useToast } from "./use-toast";
 
 export type ResourceRef<Data, Meta = undefined> = {
   data: Ref<Data>;
@@ -41,6 +36,7 @@ export function useResource<
   const meta = ref<Meta | undefined>(undefined) as Ref<Meta | undefined>;
   const status = ref<FetchStatus>(FETCH_STATUSES.IDLE);
   const error = ref<string | null>(null);
+  const toast = useToast();
 
   const currentRequestId = ref<string | null>(null);
 
@@ -71,15 +67,13 @@ export function useResource<
 
         console.error(error);
 
-        const resourceName = params.resourceName ?? 'Resource';
+        const resourceName = params.resourceName ?? "Resource";
 
-        if (params.context?.root.$toast) {
-          params.context.root.$toast({
-            variant: 'danger',
-            title: 'Error',
-            body: `${resourceName} fetching has been failed`,
-          });
-        }
+        toast.show({
+          variant: "danger",
+          title: "Error",
+          body: `${resourceName} fetching has been failed`,
+        });
 
         data.value = params.initialValue;
         meta.value = undefined;

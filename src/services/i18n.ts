@@ -1,7 +1,7 @@
-import { PluginFunction } from 'vue';
-import i18next, { InitOptions, TFunction } from 'i18next';
+import { App, Plugin } from "vue";
+import i18next, { InitOptions, TFunction } from "i18next";
 
-import configService from './configuration';
+import configService from "./configuration";
 
 type I18nextResourceBundleArgs = Parameters<typeof i18next.addResourceBundle>;
 
@@ -16,12 +16,12 @@ const i18n = {
     }
   },
   init(params?: InitOptions): Promise<TFunction> {
-    const lang = configService.getConfig().LANGUAGE ?? 'en';
+    const lang = configService.getConfig().LANGUAGE ?? "en";
 
     return i18next
       .init({
         lng: lang.toLowerCase(),
-        defaultNS: 'main',
+        defaultNS: "main",
         ...params,
       })
       .then(() => {
@@ -34,8 +34,8 @@ const i18n = {
         return i18next.t;
       });
   },
-  getPlugin(): PluginFunction<any> {
-    return (VueConstructor) => {
+  getPlugin(): Plugin {
+    return (app: App) => {
       if (!i18next.isInitialized) {
         console.error(
           "You're trying to get I18nPlugin, but i18n has not initialized yet"
@@ -44,8 +44,10 @@ const i18n = {
         const translate: TFunction = (...args: Parameters<TFunction>) =>
           i18next.t(...args);
 
-        VueConstructor.prototype.$t = translate;
-        VueConstructor.$t = translate;
+        /**
+         * Reference: {@link https://v3.vuejs.org/api/application-config.html#globalproperties}
+         */
+        app.config.globalProperties.$t = translate;
       }
     };
   },

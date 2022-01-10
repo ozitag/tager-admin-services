@@ -1,4 +1,4 @@
-import { ParsedResponseBody } from './common.types';
+import { ParsedResponseBody } from "../typings/common";
 
 class RequestError extends Error {
   status: number;

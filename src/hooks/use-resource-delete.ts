@@ -1,4 +1,5 @@
-import { ref, SetupContext } from '@vue/composition-api';
+import { ref, SetupContext } from "vue";
+import { useToast } from "./use-toast";
 
 type ResourceId = string | number;
 
@@ -12,9 +13,10 @@ export function useResourceDelete(params: {
   isDeleting: (entityId: ResourceId) => boolean;
 } {
   const deletingResourceIdList = ref<Array<ResourceId>>([]);
+  const toast = useToast();
 
   function handleResourceDelete(entityId: ResourceId) {
-    const resourceName = params.resourceName ?? 'Resource';
+    const resourceName = params.resourceName ?? "Resource";
 
     const shouldDeleteResource = window.confirm(
       `Are you sure you want to delete ${resourceName.toLowerCase()}?`
@@ -31,32 +33,26 @@ export function useResourceDelete(params: {
               params.onSuccess();
             }
 
-            if (params.context?.root.$toast) {
-              params.context.root.$toast({
-                variant: 'success',
-                title: 'Success',
-                body: `${resourceName} has been successfully removed`,
-              });
-            }
+            toast.show({
+              variant: "success",
+              title: "Success",
+              body: `${resourceName} has been successfully removed`,
+            });
           } else {
-            if (params.context?.root.$toast) {
-              params.context.root.$toast({
-                variant: 'danger',
-                title: 'Error',
-                body: `${resourceName} deletion has been failed`,
-              });
-            }
+            toast.show({
+              variant: "danger",
+              title: "Error",
+              body: `${resourceName} deletion has been failed`,
+            });
           }
         })
         .catch((error) => {
           console.error(error);
-          if (params.context?.root.$toast) {
-            params.context.root.$toast({
-              variant: 'danger',
-              title: 'Error',
-              body: `${resourceName} deletion has been failed`,
-            });
-          }
+          toast.show({
+            variant: "danger",
+            title: "Error",
+            body: `${resourceName} deletion has been failed`,
+          });
         })
         .finally(() => {
           deletingResourceIdList.value = deletingResourceIdList.value.filter(

@@ -1,12 +1,12 @@
-import { TFunction } from 'i18next';
-import { ResponseWithValidationErrorsType } from './typeGuards';
+import { TFunction } from "i18next";
+import { ResponseWithValidationErrorsType } from "../utils/type-guards";
 
 export type ConstantMap<C extends string> = Readonly<Record<C, C>>;
 export type Nullable<T> = T | null;
 export type Nullish<T> = T | null | undefined;
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-export type FetchStatus = 'IDLE' | 'LOADING' | 'SUCCESS' | 'FAILURE';
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+export type FetchStatus = "IDLE" | "LOADING" | "SUCCESS" | "FAILURE";
 
 export type QueryParams = { [key: string]: any };
 export type BodyParam = { [key: string]: any } | BodyInit;
@@ -65,7 +65,7 @@ export type ResponseBody<Data = any, M = any> = {
 export type LogoConfig = {
   logo?: Nullable<string>;
   label?: Nullable<string>;
-  'label-color'?: Nullable<string>;
+  "label-color"?: Nullable<string>;
 };
 
 export type AppConfigType = {

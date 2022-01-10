@@ -1,4 +1,4 @@
-import RequestError from './RequestError';
+import RequestError from "../utils/request-error";
 import {
   BodyParam,
   HttpMethod,
@@ -6,32 +6,33 @@ import {
   ParsedResponseBody,
   QueryParams,
   RequestOptions,
-} from './common.types';
+} from "../typings/common";
 import {
   getAccessToken,
   getApiUrl,
   getSearchString,
   removeAuthTokensAndRedirectToAuthPage,
-} from './utils';
-import configService from './configuration';
+} from "../utils/common";
+import configService from "./configuration";
+import { LOCAL_ENV } from "../constants/common";
 
 function configureHeaders(body?: BodyParam): Headers {
   const headers = new Headers();
 
   const isFormData = body instanceof FormData;
   if (!isFormData) {
-    headers.set('Content-Type', 'application/json');
+    headers.set("Content-Type", "application/json");
   }
 
   const accessToken = getAccessToken();
   if (accessToken) {
-    headers.set('Authorization', `Bearer ${accessToken}`);
+    headers.set("Authorization", `Bearer ${accessToken}`);
   }
 
-  const language: string = configService.getConfig().LANGUAGE ?? 'en';
-  headers.set('Accept-Language', language);
+  const language: string = configService.getConfig().LANGUAGE ?? "en";
+  headers.set("Accept-Language", language);
 
-  headers.set('Accept', 'application/json');
+  headers.set("Accept", "application/json");
 
   return headers;
 }
@@ -46,9 +47,9 @@ function configureBody(body?: BodyParam): BodyInit | null {
   return JSON.stringify(body);
 }
 
-function getRequestUrl(path = '', params?: QueryParams): string {
+function getRequestUrl(path = "", params?: QueryParams): string {
   const searchParams = getSearchString(params);
-  return [getApiUrl(), path, searchParams].filter(Boolean).join('');
+  return [getApiUrl(), path, searchParams].filter(Boolean).join("");
 }
 
 function configureOptions({
@@ -63,15 +64,15 @@ function configureOptions({
   return {
     headers: configureHeaders(body),
     method,
-    mode: 'cors',
+    mode: "cors",
     body: configureBody(body),
     ...fetchOptions,
   };
 }
 
 function parseResponseBody(response: Response): Promise<ParsedResponseBody> {
-  const contentType = response.headers.get('content-type');
-  const isJson = Boolean(contentType?.startsWith('application/json'));
+  const contentType = response.headers.get("content-type");
+  const isJson = Boolean(contentType?.startsWith("application/json"));
   return isJson ? response.json() : response.text();
 }
 
@@ -82,7 +83,7 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
     url: response.url,
   };
 
-  if (response.status === 401 && process.env.VUE_APP_ENV !== 'local') {
+  if (response.status === 401 && process.env.VUE_APP_ENV !== LOCAL_ENV) {
     removeAuthTokensAndRedirectToAuthPage();
   }
 
@@ -107,7 +108,7 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
 
 function logRequest(res: Response, options: RequestInit): Response {
   const formattedLog = `${options.method} ${res.status} ${res.url}`;
-  console.log(`%c ${formattedLog}`, 'color: green');
+  console.log(`%c ${formattedLog}`, "color: green");
   return res;
 }
 

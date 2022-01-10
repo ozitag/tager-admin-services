@@ -1,7 +1,7 @@
-import RequestError from './RequestError';
-import { getAccessToken, getApiUrl, getSearchString } from './utils';
-import { ParsedResponseBody, QueryParams } from './common.types';
-import configService from './configuration';
+import RequestError from "./request-error";
+import { getAccessToken, getApiUrl, getSearchString } from "./common";
+import { ParsedResponseBody, QueryParams } from "../typings/common";
+import configService from "../services/configuration";
 
 function parseResponse(response: string): ParsedResponseBody {
   try {
@@ -28,11 +28,11 @@ function upload<T>(options: {
 
     const url = [
       getApiUrl(),
-      options.path ?? '/admin/upload',
+      options.path ?? "/admin/upload",
       getSearchString(options.params),
-    ].join('');
+    ].join("");
 
-    request.upload.addEventListener('progress', (event) => {
+    request.upload.addEventListener("progress", (event) => {
       if (options.onProgress) {
         options.onProgress({
           event,
@@ -43,7 +43,7 @@ function upload<T>(options: {
       }
     });
 
-    request.addEventListener('loadend', () => {
+    request.addEventListener("loadend", () => {
       const isOk = request.status >= 200 && request.status < 300;
 
       if (isOk) {
@@ -66,20 +66,19 @@ function upload<T>(options: {
     });
 
     const formData = new FormData();
-    formData.append('file', options.file);
+    formData.append("file", options.file);
 
-    request.open('POST', url);
+    request.open("POST", url);
 
     const accessToken = getAccessToken();
     if (accessToken) {
-      request.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+      request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
     }
 
-    const language: string = configService.getConfig().LANGUAGE ?? 'en';
-    request.setRequestHeader('Accept-Language', language);
+    const language: string = configService.getConfig().LANGUAGE ?? "en";
+    request.setRequestHeader("Accept-Language", language);
 
-
-    request.setRequestHeader('Accept', 'application/json');
+    request.setRequestHeader("Accept", "application/json");
 
     request.send(formData);
   });

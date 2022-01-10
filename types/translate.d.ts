@@ -1,11 +1,7 @@
-import Vue from 'vue';
-import { TFunction } from 'i18next';
+import { TFunction } from "i18next";
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $t: TFunction;
-  }
-  interface VueConstructor {
+declare module "@vue/runtime-core" {
+  export interface ComponentCustomProperties {
     $t: TFunction;
   }
 }

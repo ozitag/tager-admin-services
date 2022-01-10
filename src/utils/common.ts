@@ -1,19 +1,20 @@
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 
-import { Nullable, QueryParams, ResponseBody } from './common.types';
-import { ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD } from './constants';
-import RequestError from './RequestError';
-import { isValidationErrorsBody } from './typeGuards';
+import { Nullable, QueryParams, ResponseBody } from "../typings/common";
+import { ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD } from "../constants/common";
+import RequestError from "./request-error";
+import { isValidationErrorsBody } from "./type-guards";
+import { LOCAL_ENV } from "../constants/common";
 
 export function getApiUrl(): string {
-  return process.env.VUE_APP_API_URL ?? '';
+  return process.env.VUE_APP_API_URL ?? "";
 }
 
 export function getAccessToken(): Nullable<string> {
-  const predefinedAccessToken = process.env.VUE_APP_ACCESS_TOKEN ?? '';
+  const predefinedAccessToken = process.env.VUE_APP_ACCESS_TOKEN ?? "";
 
   const shouldUsePredefinedAccessToken =
-    predefinedAccessToken.length > 0 && process.env.VUE_APP_ENV === 'local';
+    predefinedAccessToken.length > 0 && process.env.VUE_APP_ENV === LOCAL_ENV;
 
   if (shouldUsePredefinedAccessToken) {
     console.warn(
@@ -38,7 +39,7 @@ export function removeRefreshToken(): void {
 }
 
 export function getSearchString(queryParams?: QueryParams): string {
-  if (!queryParams || Object.keys(queryParams).length === 0) return '';
+  if (!queryParams || Object.keys(queryParams).length === 0) return "";
 
   const searchParams = new URLSearchParams();
 
@@ -70,25 +71,25 @@ export function convertRequestErrorToMap(error: Error): Record<string, string> {
 export function getMessageByStatusCode(error: RequestError): string {
   switch (error.status) {
     case 401:
-      return 'User is not authorized';
+      return "User is not authorized";
     case 403:
-      return 'Forbidden';
+      return "Forbidden";
     case 404:
       return `Server endpoint "${error.url}" is not found`;
     case 500:
-      return 'Server error';
+      return "Server error";
     case 502:
-      return 'Server is not available';
+      return "Server is not available";
 
     default:
-      return error.statusText ?? 'Request error';
+      return error.statusText ?? "Request error";
   }
 }
 
 export function getMessageFromRequestError(error: RequestError): string {
   const simpleMessage = getMessageByStatusCode(error);
 
-  if (error.body && typeof error.body === 'object') {
+  if (error.body && typeof error.body === "object") {
     const responseBody = error.body as ResponseBody;
 
     return responseBody.message || responseBody.exception || simpleMessage;
@@ -106,7 +107,7 @@ export function getMessageFromError(error: unknown): string {
     return error.message;
   }
 
-  return 'Unknown error';
+  return "Unknown error";
 }
 
 export function convertStringToNumberIfValid(value: string): number | string {
@@ -116,7 +117,7 @@ export function convertStringToNumberIfValid(value: string): number | string {
 }
 
 export function trimTrailingSlash(url: string): string {
-  return url.endsWith('/') ? url.slice(0, -1) : url;
+  return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
 export function isAbsoluteUrl(url: string): boolean {
@@ -130,10 +131,10 @@ export function isAbsoluteUrl(url: string): boolean {
 
 export function getAuthPageUrl(): string {
   const baseUrl =
-    process.env.VUE_APP_PUBLIC_PATH === '/'
-      ? ''
+    process.env.VUE_APP_PUBLIC_PATH === "/"
+      ? ""
       : process.env.VUE_APP_PUBLIC_PATH;
-  return baseUrl + '/auth';
+  return baseUrl + "/auth";
 }
 
 export function removeAuthTokensAndRedirectToAuthPage(): void {
@@ -152,23 +153,59 @@ export function createId(size?: number): string {
 }
 
 export function urlTranslit(phrase: string): string {
-  return phrase.replace(/([а-яё])|([\s_-])|([^a-z\d])/gi,
-    (_all, ch, space, words) => {
+  return phrase
+    .replace(/([а-яё])|([\s_-])|([^a-z\d])/gi, (_all, ch, space, words) => {
       if (space || words) {
-        return space ? '-' : '';
+        return space ? "-" : "";
       }
       const code = ch.charCodeAt(0);
 
-      const index = code == 1025 || code == 1105 ? 0 :
-        code > 1071 ? code - 1071 : code - 1039,
-        t = ['yo', 'a', 'b', 'v', 'g', 'd', 'e', 'zh',
-          'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p',
-          'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh',
-          'shch', '', 'y', '', 'e', 'yu', 'ya'
+      const index =
+          code == 1025 || code == 1105
+            ? 0
+            : code > 1071
+            ? code - 1071
+            : code - 1039,
+        t = [
+          "yo",
+          "a",
+          "b",
+          "v",
+          "g",
+          "d",
+          "e",
+          "zh",
+          "z",
+          "i",
+          "y",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "r",
+          "s",
+          "t",
+          "u",
+          "f",
+          "h",
+          "c",
+          "ch",
+          "sh",
+          "shch",
+          "",
+          "y",
+          "",
+          "e",
+          "yu",
+          "ya",
         ];
 
       return t[index];
-    }).replace(/-+/gi, '-').toLowerCase();
+    })
+    .replace(/-+/gi, "-")
+    .toLowerCase();
 }
 
 export function getWebsiteOrigin(): string {
