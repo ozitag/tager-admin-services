@@ -15,6 +15,7 @@ import {
 } from "../utils/common";
 import configService from "./configuration";
 import { LOCAL_ENV } from "../constants/common";
+import { environment } from "./environment.js";
 
 function configureHeaders(body?: BodyParam): Headers {
   const headers = new Headers();
@@ -83,7 +84,7 @@ function handleErrors(response: Response): Promise<ParsedResponseBody> {
     url: response.url,
   };
 
-  if (response.status === 401 && process.env.VUE_APP_ENV !== LOCAL_ENV) {
+  if (response.status === 401 && environment.appEnv !== LOCAL_ENV) {
     removeAuthTokensAndRedirectToAuthPage();
   }
 

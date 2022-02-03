@@ -1,21 +1,18 @@
 {
   "name": "@tager/admin-services",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <ivan.saranchenkov@gmail.com>",
   "license": "MIT",
-  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
+  "typings": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.mjs"
-    }
+    ".": "./dist/index.mjs"
   },
   "engines": {
     "node": ">=16"

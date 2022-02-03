@@ -5,9 +5,10 @@ import * as z from "zod";
 export { default as RequestError } from "./utils/request-error";
 export { default as configStore } from "./services/configuration";
 export { default as upload } from "./utils/upload";
-export { default as i18n } from "./services/i18n";
+export * from "./services/i18n/i18n.js";
+export * from "./services/i18n/i18n-vue-plugin.js";
 export * from "./typings/common";
-export * from "./constants/common";
+export * from "./constants/common.js";
 export * from "./utils/common";
 export * from "./utils/type-guards";
 export { z };
@@ -20,9 +21,10 @@ export const request = {
   patch: bindHttpMethod(HTTP_METHODS.PATCH),
 };
 
-export * from "./hooks/use-resource";
-export * from "./hooks/use-resource-delete";
-export * from "./hooks/use-resource-move";
-export * from "./hooks/use-resource-clone";
-export { useToast } from "./hooks/use-toast";
-export { useToastList } from "./hooks/use-toast-list";
+export * from "./hooks/use-resource.js";
+export { useResourceDelete } from "./hooks/use-resource-delete.js";
+export { useResourceMove } from "./hooks/use-resource-move.js";
+export { useResourceClone } from "./hooks/use-resource-clone.js";
+export { useTranslation } from "./hooks/use-translation.js";
+export { useToast } from "./hooks/use-toast.js";
+export { useToastList } from "./hooks/use-toast-list.js";

@@ -5,21 +5,20 @@ import { ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD } from "../constants/common";
 import RequestError from "./request-error";
 import { isValidationErrorsBody } from "./type-guards";
 import { LOCAL_ENV } from "../constants/common";
+import { environment } from "../services/environment.js";
 
 export function getApiUrl(): string {
-  return process.env.VUE_APP_API_URL ?? "";
+  return environment.apiUrl ?? "";
 }
 
 export function getAccessToken(): Nullable<string> {
-  const predefinedAccessToken = process.env.VUE_APP_ACCESS_TOKEN ?? "";
+  const predefinedAccessToken = environment.accessToken ?? "";
 
   const shouldUsePredefinedAccessToken =
-    predefinedAccessToken.length > 0 && process.env.VUE_APP_ENV === LOCAL_ENV;
+    Boolean(predefinedAccessToken) && environment.appEnv === LOCAL_ENV;
 
   if (shouldUsePredefinedAccessToken) {
-    console.warn(
-      'API service uses predefined access token from env "VUE_APP_ACCESS_TOKEN".'
-    );
+    console.warn("API service uses predefined access token from environment.");
   }
   return shouldUsePredefinedAccessToken
     ? predefinedAccessToken
@@ -130,10 +129,7 @@ export function isAbsoluteUrl(url: string): boolean {
 }
 
 export function getAuthPageUrl(): string {
-  const baseUrl =
-    process.env.VUE_APP_PUBLIC_PATH === "/"
-      ? ""
-      : process.env.VUE_APP_PUBLIC_PATH;
+  const baseUrl = environment.publicPath === "/" ? "" : environment.publicPath;
   return baseUrl + "/auth";
 }
 
@@ -209,7 +205,7 @@ export function urlTranslit(phrase: string): string {
 }
 
 export function getWebsiteOrigin(): string {
-  return process.env.VUE_APP_WEBSITE_URL || window.location.origin;
+  return environment.websiteUrl || window.location.origin;
 }
 
 export function getSearchParams(): URLSearchParams {
