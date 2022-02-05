@@ -11,7 +11,7 @@ class ConfigurationService {
 
   getConfig<T = any>(): T {
     if (!this.config) {
-      throw new Error('You are trying to access config, but it is not defined');
+      throw new Error("You are trying to access config, but it is not defined");
     }
 
     return this.config;

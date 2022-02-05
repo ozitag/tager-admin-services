@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 export const RequestErrorBodySchema = z.object({
   errors: z.record(
@@ -35,11 +35,11 @@ export function isFileObject(value: unknown): value is FileType {
 }
 
 export function isString(value: unknown): value is string {
-  return typeof value === 'string';
+  return typeof value === "string";
 }
 
 export function isNonNullObject(value: unknown): value is object {
-  return typeof value === 'object' && value !== null;
+  return typeof value === "object" && value !== null;
 }
 
 export function isNullish(value: unknown): value is null | undefined {
@@ -51,7 +51,7 @@ export function isNullable(value: unknown): value is null {
 }
 
 export function isNumber(value: unknown): value is number {
-  return typeof value === 'number' && !Number.isNaN(value);
+  return typeof value === "number" && !Number.isNaN(value);
 }
 
 export function isNotNullish<TValue>(
