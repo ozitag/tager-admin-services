@@ -69,6 +69,12 @@ export function i18nPlugin(app: App) {
   app.config.globalProperties.$i18n = i18nContext;
 }
 
+declare module "@vue/runtime-core" {
+  export interface ComponentCustomProperties {
+    $i18n: I18nContext;
+  }
+}
+
 export const i18n = Object.freeze({
   init: initI18n,
   addTranslations,

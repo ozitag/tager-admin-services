@@ -20,7 +20,7 @@ export let environment = Object.freeze<AppEnvironment>({
   sentryEnv: undefined,
 });
 
-export function initializeEnvironment(env: AppEnvironment) {
+export function initializeEnvironment(env: Partial<AppEnvironment>) {
   if (isInitialized) {
     throw new Error("Environment is already initialized");
   }
