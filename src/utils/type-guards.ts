@@ -17,7 +17,7 @@ export type ResponseWithValidationErrorsType = z.infer<
 export function isValidationErrorsBody(
   value: unknown
 ): value is ResponseWithValidationErrorsType {
-  return RequestErrorBodySchema.check(value);
+  return RequestErrorBodySchema.safeParse(value).success;
 }
 
 export const FileObjectSchema = z.object({
@@ -31,7 +31,7 @@ export const FileObjectSchema = z.object({
 export type FileType = z.infer<typeof FileObjectSchema>;
 
 export function isFileObject(value: unknown): value is FileType {
-  return FileObjectSchema.check(value);
+  return FileObjectSchema.safeParse(value).success;
 }
 
 export function isString(value: unknown): value is string {
