@@ -16,8 +16,12 @@ export interface Toast extends ToastParams {
   id: string;
 }
 
+export interface ShowToastOptions {
+  timeout?: number;
+}
+
 export interface ToastActions {
-  show(params: ToastParams): void;
+  show(params: ToastParams, options?: ShowToastOptions): void;
   hide(toastId: string): void;
 }
 

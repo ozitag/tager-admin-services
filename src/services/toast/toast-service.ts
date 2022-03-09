@@ -1,6 +1,11 @@
 import { reactive } from "vue";
 import { nanoid } from "nanoid";
-import { Toast, ToastParams, ToastService } from "./toast-model";
+import {
+  ShowToastOptions,
+  Toast,
+  ToastParams,
+  ToastService,
+} from "./toast-model";
 
 interface ToastState {
   toastList: Array<Toast>;
@@ -8,12 +13,29 @@ interface ToastState {
 
 class ToastServiceImpl implements ToastService {
   private readonly state = reactive<ToastState>({ toastList: [] });
+  private readonly timeoutMap = new Map<string, number>();
 
-  show(params: ToastParams) {
-    this.state.toastList.push({ id: nanoid(), ...params });
+  show(params: ToastParams, options?: ShowToastOptions): string {
+    const timeout = options?.timeout || 0;
+    const toastId = nanoid();
+    this.state.toastList.push({ id: toastId, ...params });
+
+    if (timeout > 0) {
+      const timeoutId = window.setTimeout(() => this.hide(toastId), timeout);
+      this.timeoutMap.set(toastId, timeoutId);
+    }
+
+    return toastId;
   }
 
   hide(toastId: string) {
+    const toastTimeoutId = this.timeoutMap.get(toastId);
+
+    if (toastTimeoutId) {
+      clearTimeout(toastTimeoutId);
+      this.timeoutMap.delete(toastId);
+    }
+
     const toastIndex = this.state.toastList.findIndex(
       (toast) => toast.id === toastId
     );
