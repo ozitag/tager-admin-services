@@ -11,17 +11,22 @@ interface ToastState {
   toastList: Array<Toast>;
 }
 
+const DEFAULT_TIMEOUT = 3000;
+
 class ToastServiceImpl implements ToastService {
   private readonly state = reactive<ToastState>({ toastList: [] });
   private readonly timeoutMap = new Map<string, number>();
 
   show(params: ToastParams, options?: ShowToastOptions): string {
-    const timeout = options?.timeout || 0;
+    const timeout = options?.timeout ?? DEFAULT_TIMEOUT;
     const toastId = nanoid();
     this.state.toastList.push({ id: toastId, hidden: false, ...params });
 
     if (timeout > 0) {
-      const timeoutId = window.setTimeout(() => this.hide(toastId), timeout);
+      const timeoutId = window.setTimeout(
+        () => this.markAsHidden(toastId),
+        timeout
+      );
       this.timeoutMap.set(toastId, timeoutId);
     }
 
