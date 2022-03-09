@@ -18,7 +18,7 @@ class ToastServiceImpl implements ToastService {
   show(params: ToastParams, options?: ShowToastOptions): string {
     const timeout = options?.timeout || 0;
     const toastId = nanoid();
-    this.state.toastList.push({ id: toastId, ...params });
+    this.state.toastList.push({ id: toastId, hidden: false, ...params });
 
     if (timeout > 0) {
       const timeoutId = window.setTimeout(() => this.hide(toastId), timeout);
@@ -26,6 +26,20 @@ class ToastServiceImpl implements ToastService {
     }
 
     return toastId;
+  }
+
+  markAsHidden(toastId: string) {
+    const toastIndex = this.state.toastList.findIndex(
+      (toast) => toast.id === toastId
+    );
+
+    if (toastIndex === -1) {
+      console.warn(`Toast with id: "${toastId}" is not found`);
+      return;
+    }
+
+    const toast = this.state.toastList[toastIndex];
+    toast.hidden = true;
   }
 
   hide(toastId: string) {

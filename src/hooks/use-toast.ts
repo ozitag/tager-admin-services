@@ -1,15 +1,18 @@
-import { ToastActions, ToastParams } from "../services/toast/toast-model";
+import { ToastActions } from "../services/toast/toast-model";
 import { toastService } from "../services/toast/toast-service";
 
-const TOAST_ACTIONS = Object.freeze({
-  show(params: ToastParams) {
-    toastService.show(params);
+const TOAST_ACTIONS = Object.freeze<ToastActions>({
+  show(...args) {
+    return toastService.show(...args);
   },
-  hide(toastId: string) {
-    toastService.hide(toastId);
+  markAsHidden(...args) {
+    toastService.markAsHidden(...args);
+  },
+  hide(...args) {
+    toastService.hide(...args);
   },
 });
 
-export function useToast(): Readonly<ToastActions> {
+export function useToast() {
   return TOAST_ACTIONS;
 }

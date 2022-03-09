@@ -14,6 +14,7 @@ export interface ToastParams {
 
 export interface Toast extends ToastParams {
   id: string;
+  hidden: boolean;
 }
 
 export interface ShowToastOptions {
@@ -21,8 +22,9 @@ export interface ShowToastOptions {
 }
 
 export interface ToastActions {
-  show(params: ToastParams, options?: ShowToastOptions): void;
+  show(params: ToastParams, options?: ShowToastOptions): string;
   hide(toastId: string): void;
+  markAsHidden(toastId: string): void;
 }
 
 export interface ReactiveToastListStore {
