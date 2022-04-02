@@ -1,6 +1,6 @@
 {
   "name": "@tager/admin-services",
-  "version": "1.0.0-rc.23",
+  "version": "1.0.0-rc.24",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <ivan.saranchenkov@gmail.com>",
