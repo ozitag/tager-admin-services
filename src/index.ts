@@ -4,9 +4,11 @@ import * as z from "zod";
 
 export { default as RequestError } from "./utils/request-error";
 export { default as configStore } from "./services/configuration";
+export * from "./services/previous-route-tracker";
 export * from "./services/toast/toast-model";
 export { toastService } from "./services/toast/toast-service";
 export { default as upload } from "./utils/upload";
+export * from "./utils/navigate-back";
 export { i18n, i18nPlugin, type I18nContext } from "./services/i18n.js";
 export {
   type AppEnvironment,
