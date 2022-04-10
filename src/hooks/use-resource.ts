@@ -1,4 +1,4 @@
-import { computed, ComputedRef, Ref, ref, SetupContext } from "vue";
+import { computed, ComputedRef, Ref, ref } from "vue";
 
 import { FetchStatus, Nullable, ResponseBody } from "../typings/common";
 import { FETCH_STATUSES } from "../constants/common";
@@ -30,7 +30,6 @@ export function useResource<
     : (params: RequestParams) => Promise<ResponseBody<Data, Meta>>;
   initialValue: Data;
   resourceName?: string;
-  context?: SetupContext;
 }): ResourceHookReturnType<Data, Meta, RequestParams> {
   const data = ref<Data>(params.initialValue) as Ref<Data>;
   const meta = ref<Meta | undefined>(undefined) as Ref<Meta | undefined>;

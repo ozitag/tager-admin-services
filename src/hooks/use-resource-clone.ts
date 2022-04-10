@@ -1,4 +1,4 @@
-import { ref, SetupContext } from "vue";
+import { ref } from "vue";
 import { useToast } from "./use-toast";
 import { useRouter } from "vue-router";
 
@@ -10,7 +10,6 @@ export function useResourceClone(params: {
   successMessage: string;
   failureMessage: string;
   onSuccessRedirectTo?: (data: any) => string;
-  context?: SetupContext;
 }): {
   handleResourceClone: (entityId: ResourceId) => void;
   isCloning: (entityId: ResourceId) => boolean;

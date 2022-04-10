@@ -1,4 +1,4 @@
-import { ref, SetupContext } from "vue";
+import { ref } from "vue";
 import { useToast } from "./use-toast";
 
 type ResourceId = string | number;
@@ -7,7 +7,6 @@ export function useResourceDelete(params: {
   deleteResource: (entityId: ResourceId) => Promise<{ success: boolean }>;
   resourceName?: string;
   onSuccess?: () => void;
-  context?: SetupContext;
 }): {
   handleResourceDelete: (entityId: ResourceId) => void;
   isDeleting: (entityId: ResourceId) => boolean;

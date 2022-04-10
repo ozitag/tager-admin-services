@@ -1,4 +1,4 @@
-import { ref, SetupContext } from "vue";
+import { ref } from "vue";
 import { useToast } from "./use-toast";
 
 type ResourceId = string | number;
@@ -11,7 +11,6 @@ export function useResourceMove(params: {
   ) => Promise<{ success: boolean }>;
   resourceName?: string;
   onSuccess?: () => void;
-  context?: SetupContext;
 }): {
   handleResourceMove: (entityId: ResourceId, direction: Direction) => void;
   isMoving: (entityId: ResourceId) => boolean;
