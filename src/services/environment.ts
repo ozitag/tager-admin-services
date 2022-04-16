@@ -8,9 +8,13 @@ export interface AppEnvironment {
   websiteUrl: string | undefined;
   sentryDsn: string | undefined;
   sentryEnv: string | undefined;
+  baseUrl: string | undefined;
+  nodeEnv: string | undefined;
 }
 
 export let environment = Object.freeze<AppEnvironment>({
+  baseUrl: undefined,
+  nodeEnv: undefined,
   publicPath: undefined,
   appEnv: undefined,
   apiUrl: undefined,
