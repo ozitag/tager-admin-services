@@ -10,6 +10,7 @@ export interface AppEnvironment {
   sentryEnv: string | undefined;
   baseUrl: string | undefined;
   nodeEnv: string | undefined;
+  version: string | undefined;
 }
 
 export let environment = Object.freeze<AppEnvironment>({
@@ -22,6 +23,7 @@ export let environment = Object.freeze<AppEnvironment>({
   websiteUrl: undefined,
   sentryDsn: undefined,
   sentryEnv: undefined,
+  version: undefined,
 });
 
 export function initializeEnvironment(env: Partial<AppEnvironment>) {
