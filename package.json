@@ -1,6 +1,6 @@
 {
   "name": "@tager/admin-services",
-  "version": "1.0.0-rc.29",
+  "version": "1.0.0",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <ivan.saranchenkov@gmail.com>",
@@ -25,8 +25,8 @@
     "prepare": "yarn build"
   },
   "dependencies": {
-    "i18next": "^21.6.15",
-    "nanoid": "^3.3.2",
+    "i18next": "^21.6.16",
+    "nanoid": "^3.3.3",
     "zod": "^3.14.4"
   },
   "devDependencies": {
@@ -35,11 +35,11 @@
     "concurrently": "^7.1.0",
     "copyfiles": "^2.4.1",
     "husky": "^7.0.4",
-    "lint-staged": "^12.3.7",
+    "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "typescript": "^4.6.3",
-    "vite": "^2.9.1",
-    "vue": "3.2.31",
+    "vite": "^2.9.6",
+    "vue": "3.2.33",
     "vue-router": "4.0.14"
   },
   "peerDependencies": {
