@@ -75,7 +75,7 @@ export type AppConfigType = {
   BRAND: {
     small: LogoConfig;
     large: LogoConfig;
-    subtitle: string;
+    subtitle?: string;
   };
   SPLASH_SCREEN: {
     enabled: boolean;
