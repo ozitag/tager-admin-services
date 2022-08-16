@@ -1,6 +1,6 @@
 {
   "name": "@tager/admin-services",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Tager admin services",
   "repository": "git@github.com:ozitag/tager-admin-services.git",
   "author": "Ivan Saranchonkau <ivan.saranchenkov@gmail.com>",
@@ -36,6 +36,7 @@
     "copyfiles": "^2.4.1",
     "husky": "^7.0.4",
     "lint-staged": "^12.4.1",
+    "pinia": "^2.0.18",
     "prettier": "^2.6.2",
     "typescript": "^4.6.3",
     "vite": "^2.9.6",
