@@ -5,7 +5,7 @@ import RequestError from "../utils/request-error";
 import {FetchStatus, Nullable} from "../typings/common";
 
 import {getUserProfile} from "../services/profile-api";
-import {UserModel} from "../typings/user";
+import {Scopes, ScopesOperand, UserModel} from "../typings/user";
 
 interface State {
     profile: Nullable<UserModel>;
@@ -51,16 +51,44 @@ export const useUserStore = defineStore("user", {
             });
 
             return scopes;
+        },
+        checkScopes(state) {
+            return (scopes: Scopes, scopesOperand: ScopesOperand = 'OR'): boolean => {
+                const roles = state.profile ? state.profile.roles : [];
+
+                const scopesAll: Array<string> = [];
+                roles.forEach((role) => {
+                    scopesAll.push(...role.scopes);
+                });
+
+                if (scopesAll.includes("*")) return true;
+
+                const scopesArray = typeof scopes === 'string' ? [scopes] : scopes;
+
+                if (scopesOperand === 'OR') {
+                    for (let i = 0; i < scopesArray.length; i++) {
+                        if (scopesAll.includes(scopesArray[i])) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                } else if (scopesOperand === 'AND') {
+                    for (let i = 0; i < scopesArray.length; i++) {
+                        if (!scopesAll.includes(scopesArray[i])) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     }
 });
 
 export function useUserPermission(scope: string): boolean {
-    const store = useUserStore();
-
-    const scopes = store.userScopes;
-
-    if (scopes.includes("*")) return true;
-
-    return scopes.includes(scope);
+    return useUserStore().checkScopes(scope);
 }
