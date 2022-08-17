@@ -53,8 +53,9 @@ export const useUserStore = defineStore("user", {
             return scopes;
         },
         checkScopes(state) {
-            return (scopes: Scopes, scopesOperand: ScopesOperand = 'OR'): boolean => {
+            return (scopes: Scopes): boolean => {
                 const roles = state.profile ? state.profile.roles : [];
+
 
                 const scopesAll: Array<string> = [];
                 roles.forEach((role) => {
@@ -64,9 +65,15 @@ export const useUserStore = defineStore("user", {
                 if (scopesAll.includes("*")) return true;
 
                 const scopesArray = typeof scopes === 'string' ? [scopes] : scopes;
+                if (scopesArray.length === 0) {
+                    return false;
+                }
+
+                const scopesOperand: ScopesOperand = scopesArray[0] === 'OR' ? 'OR' : 'AND';
 
                 if (scopesOperand === 'OR') {
                     for (let i = 0; i < scopesArray.length; i++) {
+                        if (scopesArray[i] === 'OR' || scopesArray[i] === 'AND') continue;
                         if (scopesAll.includes(scopesArray[i])) {
                             return true;
                         }
@@ -75,6 +82,7 @@ export const useUserStore = defineStore("user", {
                     return false;
                 } else if (scopesOperand === 'AND') {
                     for (let i = 0; i < scopesArray.length; i++) {
+                        if (scopesArray[i] === 'OR' || scopesArray[i] === 'AND') continue;
                         if (!scopesAll.includes(scopesArray[i])) {
                             return false;
                         }
